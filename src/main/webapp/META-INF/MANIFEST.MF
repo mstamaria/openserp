@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Implementation-Vendor: Mikes
+Implementation-Title: Open School ERP WebApp
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: michael
+Build-Jdk: 1.6.0_37
+Built-OS: Windows 7
+Created-By: Apache Maven 3.0.4
+
