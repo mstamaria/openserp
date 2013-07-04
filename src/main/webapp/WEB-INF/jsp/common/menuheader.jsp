@@ -1,9 +1,8 @@
 
-<div class="container">
   <div ng-controller="headerController">
     <div class="navbar">
       <div class="navbar-inner">
-        <a class="brand" href="#">Test</a>
+        <a class="brand" href="home">Test</a>
         <ul class="nav" role="navigation">
           <li class="dropdown">
             <a class="dropdown-toggle">
@@ -34,4 +33,4 @@
       </div>
     </div>
   </div>
-</div>
+
