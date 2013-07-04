@@ -18,8 +18,8 @@
             <li class="dropdown">
               <a class="dropdown-toggle">Admin<b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li ng-repeat="choice in items">
-                  <a>{{choice}}</a>
+                <li ng-repeat="menu in menuItems">
+                  <a href="{{menu.url}}">{{menu.name}}</a>
                 </li>
               </ul>
             </li>
