@@ -3,5 +3,7 @@
 <%@include file="./common/head.jsp"%>
 <body>
   <%@include file="./common/menuheader.jsp"%>
+
+Test  ${username}
 </body>
 </html>
