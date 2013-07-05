@@ -9,16 +9,20 @@ import org.openserp.dao.UserDao;
 import org.openserp.entity.User;
 import org.openserp.entity.UserRole;
 import org.openserp.enums.UserType;
+import org.openserp.test.common.AbstractDBUnitTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+
 @TransactionConfiguration(defaultRollback = true)
 @ContextConfiguration(locations = { "classpath:applicationContext-main.xml" })
-public class UserDaoImplTest extends
-		AbstractTransactionalTestNGSpringContextTests {
+//@AbstractDBUnitTest.FlatXMLDataSet(locations = { 
+//				"daoTesting/UserDao.xml" })
+
+public class UserDaoImplTest extends AbstractTransactionalTestNGSpringContextTests {
 
 	@Resource(name = "userDao")
 	private UserDao userDao;
