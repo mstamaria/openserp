@@ -66,5 +66,6 @@ public class UserServiceImpl implements UserService {
 				&& (userEntity.getFailedCount() == null || userEntity
 						.getFailedCount() < 10));
 	}
+	
 
 }

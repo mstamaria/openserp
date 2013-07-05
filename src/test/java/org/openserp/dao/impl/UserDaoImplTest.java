@@ -35,28 +35,67 @@ public class UserDaoImplTest extends
 
 	@Test
 	public void testSaveFind() {
-		// save
-		UserRole userRole = new UserRole();
-		userRole.setRole("ROLE_USER");
-		List<UserRole> roles = Arrays.asList(userRole);
-		
-		User entity = new User();
-		entity.setFailedCount(0);
-		entity.setPassword("password");
-		entity.setUsername("username");
-		entity.setRoles(roles);
-		entity.setUserType(UserType.ADMIN);
-		
-		userRole.setUser(entity);
+		// create user roles
+		List<UserRole> userRoleList = createUserRoleList();
+		// create the user
+		User userEntity = createUserEntity();
+		// set the bidirectional association
+		setBidirectionalAssociation(userRoleList, userEntity);
 
-		User user = userDao.saveUpdate(entity);
-		Assert.assertEquals(entity, user);
+		User user = userDao.saveUpdate(userEntity);
+		Assert.assertEquals(userEntity, user);
 
 		// find
 		User queryResult = userDao.findById("username");
 		Assert.assertEquals(user, queryResult);
 		List<UserRole> roles2 = queryResult.getRoles();
-		Assert.assertEquals(roles.size(), roles2.size());
-		Assert.assertEquals(roles.get(0), roles2.get(0));
+		Assert.assertEquals(userRoleList.size(), roles2.size());
+		Assert.assertEquals(userRoleList.get(0), roles2.get(0));
+	}
+
+	private void setBidirectionalAssociation(List<UserRole> userRoleList,
+			User userEntity) {
+		userEntity.setRoles(userRoleList);
+		for (UserRole userRole : userRoleList) {
+			userRole.setUser(userEntity);
+		}
+	}
+
+	private User createUserEntity() {
+		User userEntity = new User();
+		userEntity.setFailedCount(0);
+		userEntity.setPassword("password");
+		userEntity.setUsername("username");
+		userEntity.setUserType(UserType.ADMIN);
+		return userEntity;
+	}
+
+	private List<UserRole> createUserRoleList() {
+		UserRole userRole = new UserRole();
+		userRole.setRole("ROLE_USER");
+		List<UserRole> userRoleList = Arrays.asList(userRole);
+		return userRoleList;
+	}
+	
+	@Test
+	public void testSaveFindAll(){
+		
+		//initial find
+		List<User> queryResult = userDao.findAll();
+		Assert.assertEquals(queryResult.size(), 1);
+		
+		// create user roles
+		List<UserRole> userRoleList = createUserRoleList();
+		// create the user
+		User userEntity = createUserEntity();
+		// set the bidirectional association
+		setBidirectionalAssociation(userRoleList, userEntity);
+
+		User user = userDao.saveUpdate(userEntity);
+		Assert.assertEquals(userEntity, user);
+		
+		// find after saving
+		queryResult = userDao.findAll();
+		Assert.assertEquals(queryResult.size(), 2);
 	}
 }
