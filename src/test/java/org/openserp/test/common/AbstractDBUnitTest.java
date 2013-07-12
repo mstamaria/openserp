@@ -61,7 +61,10 @@ public abstract class AbstractDBUnitTest extends AbstractTransactionalTestNGSpri
 	}
 
 	
-	@BeforeClass
+	//@BeforeClass
+	// check migration not needed since applicationContext-main-test.xml already
+	// contains flyway db checking
+	/*
 	public void checkMigration() {
 		String url = "null";
 		String userName = "null";
@@ -92,6 +95,7 @@ public abstract class AbstractDBUnitTest extends AbstractTransactionalTestNGSpri
 
 		}
 	}
+	*/
 
 	
 	@BeforeMethod

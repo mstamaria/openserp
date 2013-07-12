@@ -18,10 +18,10 @@ import org.testng.annotations.Test;
 
 
 @TransactionConfiguration(defaultRollback = true)
-@ContextConfiguration(locations = { "classpath:applicationContext-main.xml" })
+@ContextConfiguration(locations = { "classpath:applicationContext-main-test.xml" })
 //@AbstractDBUnitTest.FlatXMLDataSet(locations = { 
 //				"daoTesting/UserDao.xml" })
-
+//
 public class UserDaoImplTest extends AbstractTransactionalTestNGSpringContextTests {
 
 	@Resource(name = "userDao")
