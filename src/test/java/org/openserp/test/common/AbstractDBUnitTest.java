@@ -1,13 +1,10 @@
 package org.openserp.test.common;
 
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
-import java.sql.DatabaseMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,20 +18,14 @@ import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 
-import com.googlecode.flyway.core.Flyway;
-import com.googlecode.flyway.core.api.MigrationInfo;
-import com.googlecode.flyway.core.api.MigrationInfoService;
 @TransactionConfiguration(defaultRollback = true)
-public abstract class AbstractDBUnitTest extends AbstractTransactionalTestNGSpringContextTests
- {
+public abstract class AbstractDBUnitTest extends
+		AbstractTransactionalTestNGSpringContextTests {
 
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface FlatXMLDataSet {
@@ -48,76 +39,61 @@ public abstract class AbstractDBUnitTest extends AbstractTransactionalTestNGSpri
 		public String[] excludeLocations() default {};
 	}
 
-	@Autowired
+	@Resource(name = "databaseTester")
 	private IDatabaseTester databaseTester;
 
 	private DataSource ds;
 
 	@Override
-	@Resource(name="dataSource")
+	@Resource(name = "dataSource")
 	public void setDataSource(DataSource dataSource) {
-		this.ds=dataSource;
+		this.ds = dataSource;
 		super.setDataSource(dataSource);
 	}
 
-	
-	//@BeforeClass
+	// @BeforeClass
 	// check migration not needed since applicationContext-main-test.xml already
 	// contains flyway db checking
 	/*
-	public void checkMigration() {
-		String url = "null";
-		String userName = "null";
-		try {
-			DatabaseMetaData metaData = ds.getConnection().getMetaData();
-			url = metaData.getURL();
-			userName = metaData.getUserName();
-		} catch (SQLException e) {
-			throw new RuntimeException("Unable to retrieve datasource details",
-					e);
-		}
-		Flyway fly = new Flyway();
-		fly.setDataSource(ds);
-		MigrationInfoService flyinfo = fly.info();
-		MigrationInfo[] result = flyinfo.pending();
-		if (result.length > 0) {
-			StringBuilder pending = new StringBuilder();
-			for (int i = 0; i < result.length; i++)
-				pending.append("\t" + result[i].getScript() + "\n");
-			StringBuilder failMsg = new StringBuilder(
-					"Test Database is not up to date. \n");
-			failMsg.append("Please run flyway migration before testing.\n");
-			failMsg.append("connection url:").append(url)
-					.append("\n connection username:").append(userName);
-			failMsg.append("\nList of Pending scripts: \n");
-			failMsg.append(pending);
-			Assert.fail(failMsg.toString());
+	 * public void checkMigration() { String url = "null"; String userName =
+	 * "null"; try { DatabaseMetaData metaData =
+	 * ds.getConnection().getMetaData(); url = metaData.getURL(); userName =
+	 * metaData.getUserName(); } catch (SQLException e) { throw new
+	 * RuntimeException("Unable to retrieve datasource details", e); } Flyway
+	 * fly = new Flyway(); fly.setDataSource(ds); MigrationInfoService flyinfo =
+	 * fly.info(); MigrationInfo[] result = flyinfo.pending(); if (result.length
+	 * > 0) { StringBuilder pending = new StringBuilder(); for (int i = 0; i <
+	 * result.length; i++) pending.append("\t" + result[i].getScript() + "\n");
+	 * StringBuilder failMsg = new StringBuilder(
+	 * "Test Database is not up to date. \n");
+	 * failMsg.append("Please run flyway migration before testing.\n");
+	 * failMsg.append("connection url:").append(url)
+	 * .append("\n connection username:").append(userName);
+	 * failMsg.append("\nList of Pending scripts: \n"); failMsg.append(pending);
+	 * Assert.fail(failMsg.toString());
+	 * 
+	 * } }
+	 */
 
-		}
-	}
-	*/
-
-	
 	@BeforeMethod
 	public void setUp(Method method) throws Exception {
 
 		NoSetUp noSetup = null;
 		String[] excludeLocations = null;
-		
+
 		if (method.isAnnotationPresent(NoSetUp.class)) {
 			noSetup = method.getAnnotation(NoSetUp.class);
 			excludeLocations = noSetup.excludeLocations();
 		}
 
-		if (!method.isAnnotationPresent(NoSetUp.class) 
+		if (!method.isAnnotationPresent(NoSetUp.class)
 				|| !ArrayUtils.isEmpty(excludeLocations)) {
-			
-			
+
 			IDataSet dataSet = getDataSet(excludeLocations);
 			databaseTester.setDataSet(dataSet);
-			databaseTester.setSetUpOperation(DatabaseOperation.CLEAN_INSERT);
-			databaseTester.setTearDownOperation(DatabaseOperation.DELETE_ALL);
-			
+			databaseTester.setSetUpOperation(DatabaseOperation.INSERT);
+			databaseTester.setTearDownOperation(DatabaseOperation.DELETE);
+
 			databaseTester.onSetup();
 		}
 
@@ -129,7 +105,8 @@ public abstract class AbstractDBUnitTest extends AbstractTransactionalTestNGSpri
 		List<IDataSet> dataSetList = new ArrayList<IDataSet>();
 		for (org.springframework.core.io.Resource dataSetLocation : flatXMLDatasets) {
 			/* skip the file that was declared excluded in the @NoSetup method */
-			if (ArrayUtils.contains(excludeLocations, dataSetLocation.getFilename())) {
+			if (ArrayUtils.contains(excludeLocations,
+					dataSetLocation.getFilename())) {
 				continue;
 			}
 			try {

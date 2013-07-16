@@ -6,7 +6,7 @@ import org.dbunit.DataSourceDatabaseTester;
 import org.dbunit.database.DatabaseConfig;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.ext.mysql.MySqlDataTypeFactory;
-import org.dbunit.ext.oracle.Oracle10DataTypeFactory;
+import org.dbunit.ext.mysql.MySqlMetadataHandler;
 
 public class CustomDatabaseTester extends DataSourceDatabaseTester {
 
@@ -24,6 +24,8 @@ public class CustomDatabaseTester extends DataSourceDatabaseTester {
 		databaseConfig.setProperty(
 				DatabaseConfig.PROPERTY_DATATYPE_FACTORY,
 				new MySqlDataTypeFactory());
+		databaseConfig.setProperty(DatabaseConfig.PROPERTY_METADATA_HANDLER,
+				new MySqlMetadataHandler());
 
 		return databaseConnection;
 	}

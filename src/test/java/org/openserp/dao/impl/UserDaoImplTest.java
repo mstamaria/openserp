@@ -11,7 +11,6 @@ import org.openserp.entity.UserRole;
 import org.openserp.enums.UserType;
 import org.openserp.test.common.AbstractDBUnitTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -19,23 +18,13 @@ import org.testng.annotations.Test;
 
 @TransactionConfiguration(defaultRollback = true)
 @ContextConfiguration(locations = { "classpath:applicationContext-main-test.xml" })
-//@AbstractDBUnitTest.FlatXMLDataSet(locations = { 
-//				"daoTesting/UserDao.xml" })
-//
-public class UserDaoImplTest extends AbstractTransactionalTestNGSpringContextTests {
+@AbstractDBUnitTest.FlatXMLDataSet(locations = { 
+				"daoTesting/UserDao.xml" })
+
+public class UserDaoImplTest extends AbstractDBUnitTest {
 
 	@Resource(name = "userDao")
 	private UserDao userDao;
-
-	@Test
-	public void testSave() {
-		User entity = new User();
-		entity.setFailedCount(0);
-		entity.setPassword("password");
-		entity.setUsername("username");
-		User user = userDao.saveUpdate(entity);
-		Assert.assertEquals(entity, user);
-	}
 
 	@Test
 	public void testSaveFind() {
@@ -86,7 +75,7 @@ public class UserDaoImplTest extends AbstractTransactionalTestNGSpringContextTes
 		
 		//initial find
 		List<User> queryResult = userDao.findAll();
-		Assert.assertEquals(queryResult.size(), 1);
+		Assert.assertEquals(queryResult.size(), 2);
 		
 		// create user roles
 		List<UserRole> userRoleList = createUserRoleList();
@@ -100,6 +89,6 @@ public class UserDaoImplTest extends AbstractTransactionalTestNGSpringContextTes
 		
 		// find after saving
 		queryResult = userDao.findAll();
-		Assert.assertEquals(queryResult.size(), 2);
+		Assert.assertEquals(queryResult.size(), 3);
 	}
 }
