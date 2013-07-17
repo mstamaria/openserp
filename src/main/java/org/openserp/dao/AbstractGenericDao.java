@@ -64,6 +64,15 @@ public abstract class AbstractGenericDao<Entity, PK extends Serializable>
 		return findByCriteria(0, 0, query);
 
 	}
+
+	@Transactional(propagation=Propagation.SUPPORTS, readOnly=true)
+	@Override
+	public List<Entity> findAllByPage(int firstResult, int maxResults) {
+		Query query = entityManager
+				.createQuery("FROM " + entityClass.getName());
+		return findByCriteria(firstResult, maxResults, query);
+
+	}
 	
 	@Transactional(propagation=Propagation.SUPPORTS, readOnly=true)
 	@Override

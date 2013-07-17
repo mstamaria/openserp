@@ -52,5 +52,14 @@ public interface GenericDao<Entity, PK extends Serializable> {
 	 */
 	List<Entity> findByCriteria(int firstResult, int maxResults, Query query);
 
+	/**
+	 * Retrieves all records by page
+	 * 
+	 * @param firstResult
+	 * @param maxResults
+	 * @return
+	 */
+	List<Entity> findAllByPage(int firstResult, int maxResults);
+
 	
 }

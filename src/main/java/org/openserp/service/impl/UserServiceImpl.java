@@ -2,6 +2,7 @@ package org.openserp.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.openserp.dao.UserDao;
@@ -67,5 +68,10 @@ public class UserServiceImpl implements UserService {
 						.getFailedCount() < 10));
 	}
 	
+	
+	public List<User> getUserList(int firstResult, int maxResults){
+		List<User> resultList = userDao.findAllByPage(firstResult, maxResults);
+		return resultList;
+	}
 
 }

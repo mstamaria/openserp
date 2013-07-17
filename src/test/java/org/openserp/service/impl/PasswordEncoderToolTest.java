@@ -9,7 +9,7 @@ import org.springframework.test.context.testng.AbstractTransactionalTestNGSpring
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-@ContextConfiguration(locations = { "classpath:applicationContext-main.xml" })
+@ContextConfiguration(locations = { "classpath:applicationContext-main-test.xml" })
 public class PasswordEncoderToolTest extends
 		AbstractTransactionalTestNGSpringContextTests {
 

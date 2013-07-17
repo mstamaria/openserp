@@ -21,7 +21,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-@ContextConfiguration(locations = { "classpath:applicationContext-main.xml" })
+@ContextConfiguration(locations = { "classpath:applicationContext-main-test.xml" })
 public class UserServiceImplTest extends
 		AbstractTransactionalTestNGSpringContextTests {
 
