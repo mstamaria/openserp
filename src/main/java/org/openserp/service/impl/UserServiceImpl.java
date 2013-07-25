@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		if (CollectionUtils.isNotEmpty(userEntity.getRoles())) {
 			for (UserRole userRole : userEntity.getRoles()) {
-				authorities.add(new SimpleGrantedAuthority(userRole.getRole()));
+				authorities.add(new SimpleGrantedAuthority(userRole.getRole().getValue()));
 			}
 		}
 

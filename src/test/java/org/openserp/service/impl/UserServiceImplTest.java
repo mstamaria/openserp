@@ -11,6 +11,7 @@ import org.openserp.dao.UserDao;
 import org.openserp.entity.User;
 import org.openserp.entity.UserRole;
 import org.openserp.enums.LoginStatus;
+import org.openserp.enums.UserRoleEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -99,7 +100,7 @@ public class UserServiceImplTest extends
 
 	private UserRole createUserRole(User user, String string) {
 		UserRole userRole = new UserRole();
-		userRole.setRole(string);
+		userRole.setRole(UserRoleEnum.SYSADMIN);
 		userRole.setUser(user);
 		return userRole;
 	}

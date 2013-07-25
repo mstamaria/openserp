@@ -12,8 +12,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.openserp.enums.LoginStatus;
-import org.openserp.enums.UserType;
+import org.openserp.enums.UserTypeEnum;
 
 @Entity
 @Table(name = "CTX_USER")
@@ -68,11 +70,11 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public UserType getUserType() {
-		return UserType.getEnum(this.userType);
+	public UserTypeEnum getUserType() {
+		return UserTypeEnum.getEnum(this.userType);
 	}
 
-	public void setUserType(UserType userType) {
+	public void setUserType(UserTypeEnum userType) {
 		this.userType = userType.getValue();
 	}
 
@@ -102,11 +104,8 @@ public class User implements Serializable {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((username == null) ? 0 : username.hashCode());
-		return result;
+		return new HashCodeBuilder().append(this.username)
+				.append(this.userType).hashCode();
 	}
 
 	@Override
@@ -118,12 +117,9 @@ public class User implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
-		return true;
+		return new EqualsBuilder()
+				.append(this.getUsername(), other.getUsername())
+				.append(this.getUserType(), other.getUserType()).isEquals();
 	}
 
 	@Override

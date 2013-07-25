@@ -8,7 +8,8 @@ import javax.annotation.Resource;
 import org.openserp.dao.UserDao;
 import org.openserp.entity.User;
 import org.openserp.entity.UserRole;
-import org.openserp.enums.UserType;
+import org.openserp.enums.UserRoleEnum;
+import org.openserp.enums.UserTypeEnum;
 import org.openserp.test.common.AbstractDBUnitTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -59,13 +60,13 @@ public class UserDaoImplTest extends AbstractDBUnitTest {
 		userEntity.setFailedCount(0);
 		userEntity.setPassword("password");
 		userEntity.setUsername("username");
-		userEntity.setUserType(UserType.ADMIN);
+		userEntity.setUserType(UserTypeEnum.ADMIN);
 		return userEntity;
 	}
 
 	private List<UserRole> createUserRoleList() {
 		UserRole userRole = new UserRole();
-		userRole.setRole("ROLE_USER");
+		userRole.setRole(UserRoleEnum.SYSADMIN);
 		List<UserRole> userRoleList = Arrays.asList(userRole);
 		return userRoleList;
 	}

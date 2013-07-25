@@ -13,6 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.openserp.enums.UserRoleEnum;
+
 @Entity
 @Table(name = "CTX_USER_ROLE")
 public class UserRole implements Serializable {
@@ -25,16 +29,19 @@ public class UserRole implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
-	private Integer id;
+	@Column(name = "RECID")
+	private Integer recid;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "USERNAME", nullable = false)
 	private User user;
 
 	@Column(name = "ROLE")
 	private String role;
 
+	
+	
+	
 	public User getUser() {
 		return user;
 	}
@@ -43,21 +50,17 @@ public class UserRole implements Serializable {
 		this.user = user;
 	}
 
-	public String getRole() {
-		return role;
+	public UserRoleEnum getRole() {
+		return UserRoleEnum.getEnum(this.role);
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRole(UserRoleEnum role) {
+		this.role = role.getValue();
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((role == null) ? 0 : role.hashCode());
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
-		return result;
+		return new HashCodeBuilder().append(user).append(role).hashCode();
 	}
 
 	@Override
@@ -69,17 +72,8 @@ public class UserRole implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		UserRole other = (UserRole) obj;
-		if (role == null) {
-			if (other.role != null)
-				return false;
-		} else if (!role.equals(other.role))
-			return false;
-		if (user == null) {
-			if (other.user != null)
-				return false;
-		} else if (!user.equals(other.user))
-			return false;
-		return true;
+		return new EqualsBuilder().append(this.getRole(), other.getRole())
+				.append(this.getUser(), other.getUser()).isEquals();
 	}
 
 }
