@@ -16,12 +16,9 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-
 @TransactionConfiguration(defaultRollback = true)
 @ContextConfiguration(locations = { "classpath:applicationContext-main-test.xml" })
-@AbstractDBUnitTest.FlatXMLDataSet(locations = { 
-				"daoTesting/UserDao.xml" })
-
+@AbstractDBUnitTest.FlatXMLDataSet(locations = { "daoTesting/UserDao.xml" })
 public class UserDaoImplTest extends AbstractDBUnitTest {
 
 	@Resource(name = "userDao")
@@ -70,14 +67,14 @@ public class UserDaoImplTest extends AbstractDBUnitTest {
 		List<UserRole> userRoleList = Arrays.asList(userRole);
 		return userRoleList;
 	}
-	
+
 	@Test
-	public void testSaveFindAll(){
-		
-		//initial find
+	public void testSaveFindAll() {
+
+		// initial find
 		List<User> queryResult = userDao.findAll();
 		Assert.assertEquals(queryResult.size(), 2);
-		
+
 		// create user roles
 		List<UserRole> userRoleList = createUserRoleList();
 		// create the user
@@ -87,7 +84,7 @@ public class UserDaoImplTest extends AbstractDBUnitTest {
 
 		User user = userDao.saveUpdate(userEntity);
 		Assert.assertEquals(userEntity, user);
-		
+
 		// find after saving
 		queryResult = userDao.findAll();
 		Assert.assertEquals(queryResult.size(), 3);

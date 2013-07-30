@@ -45,5 +45,6 @@
 	<tx:annotation-driven transaction-manager="txManager" />
 
 	<bean id="userDao" class="org.openserp.dao.impl.UserDaoImpl" />
+	<bean id="studentDao" class="org.openserp.dao.impl.StudentDaoImpl" />
 
 </beans>
